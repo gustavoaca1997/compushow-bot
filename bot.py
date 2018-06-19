@@ -41,7 +41,7 @@ bot = telepot.DelegatorBot(TOKEN, [
 ])
 bot.message_loop(source=UPDATE_QUEUE)
 webhook = OrderedWebhook(bot)
-@app.route('bot' + TOKEN, methods=['GET', 'POST'])
+@app.route('/bot' + TOKEN, methods=['GET', 'POST'])
 def pass_update():
     UPDATE_QUEUE.put(request.data)
     return 'ok'
