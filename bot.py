@@ -14,7 +14,7 @@ from queue import Queue
 # TOKEN = os.environ.get('TOKEN')
 TOKEN = "464114645:AAHp2GvwFhbxpLrsokB2upvW5yVcUDcyGbk"
 # URL = os.environ.get('URL')
-URL = "https://compushow-bot.herokuapp.com/"
+URL = "https://compushow-bot.herokuapp.com"
 SECRET = '/bot' + TOKEN
 UPDATE_QUEUE = Queue()
 
