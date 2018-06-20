@@ -233,7 +233,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                     nominado_set += "{}\n".format(nominate['fields']['comment'])
             nominado_set += "\n"
 
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="votar",, callback_data="/voto {}".format(nominado['nominee'][0]['pk']))]])
+            keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="votar", callback_data="/voto {}".format(nominado['nominee'][0]['pk']))]])
 
             bot.sendMessage(from_id, nominado_set, reply_markup=keyboard)
 
