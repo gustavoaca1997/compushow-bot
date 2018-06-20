@@ -95,7 +95,6 @@ class ChatSesion(telepot.helper.ChatHandler):
 
     # Manejador de mensajes
     def on_chat_message(self, msg):
-        print('Usuarios esperando')
         pprint(usuarios_esperando)
         # Imprimir en consola mensaje recibido
         print('Mensaje recibido:')
@@ -111,7 +110,7 @@ class ChatSesion(telepot.helper.ChatHandler):
 
         # Si el mensaje es texto
         if content_type == 'text':
-            if is_waiting(str(chat_id)):
+            if is_waiting(chat_id):
                 # Actualizamos diccionario
                 usuarios_esperando[chat_id] = False
 
@@ -119,7 +118,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
                     # Guardamos en la base de datos
-                    if save_user(usuario, password, chat_id):
+                    if save_user(usuario, password, str(chat_id)):
                         bot.sendMessage(chat_id, 'Se registró exitosamente tu cuenta.')
                     else:
                         bot.sendMessage(chat_id, 'Se actualizó correctamente tu cuenta.')
