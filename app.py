@@ -57,7 +57,7 @@ def save_user(usuario, password, chat_id):
 
     # Chequeamos si ya el usuario existe
     cur.execute('SELECT carnet FROM usuario WHERE carnet = %s;', (usuario, ))
-    usuario_guardado = cur.fetchone()
+    usuario_guardado = cur.fetchone()[0]
 
     # Si no está en la base de datos, insertar
     if not usuario_guardado:
@@ -76,6 +76,14 @@ def save_user(usuario, password, chat_id):
         conn.close()
         return 0
 
+## Funcion que chequea si se está esperando que el usuario envíe sus datos de usuario
+def is_waiting(chat_id):
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur = conn.cursor()
+
+    cur.execute('SELECT is_waiting FROM usuario WHERE chat_id = %s;', (chat_id, ))
+    return cur.fetchone()[0]
+
 #####################################
 ############### Bot #################
 #####################################
@@ -84,14 +92,10 @@ class ChatSesion(telepot.helper.ChatHandler):
     def __init__(self, *args, **kwargs):
         super(ChatSesion, self).__init__(*args, **kwargs)
 
-        # atributo que permite saber si se está esperando por el usuario y contraseña
-        self.start = False
-
     # Manejador de mensajes
     def on_chat_message(self, msg):
         # Imprimir en consola mensaje recibido
         print('Mensaje recibido:')
-        print('start: ', self.start)
         pprint(msg)
 
         # Obtener info basica del mensaje
@@ -104,8 +108,7 @@ class ChatSesion(telepot.helper.ChatHandler):
 
         # Si el mensaje es texto
         if content_type == 'text':
-            if self.start:
-                self.start = False
+            if is_waiting(chat_id):
                 try:
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
@@ -130,8 +133,6 @@ class ChatSesion(telepot.helper.ChatHandler):
 
             else:
                 bot.sendMessage(chat_id, 'Si necesitas ayuda en como comunicarte conmigo, usa el comando /help mientras escuchas esta brutal playlist: {}'.format(PLAYLIST_URL))
-
-            print('start:', self.start)
 
 
 
