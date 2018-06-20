@@ -213,6 +213,7 @@ class ChatSesion(telepot.helper.ChatHandler):
         ## Si se recibió un voto
         if query_data.split()[0] == "/voto":
             r = requests.post(COMPUSHOW_URL + 'voting_from_bot', data={'nominee': query_data.split()[1]})
+            pprint(r.text)
             response = r.json()
             if response.get('success', False):
                 bot.answerCallbackQuery(query_id, text='voto registrado')
