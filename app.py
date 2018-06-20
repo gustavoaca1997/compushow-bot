@@ -59,7 +59,7 @@ def is_login(text, chat_id):
         if usuario_guardado:
             cur.execute('UPDATE usuario SET is_waiting = true WHERE chat_id = %s;', (chat_id, ))
         else:
-            cur.execute('INSERT INTO usuario (chat_id) VALUES (%s);', (chat_id, ))
+            cur.execute('INSERT INTO usuario (chat_id, is_waiting) VALUES (%s, true);', (chat_id, ))
         conn.commit()
         cur.close()
         conn.close()
