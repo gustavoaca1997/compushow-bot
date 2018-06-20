@@ -99,7 +99,10 @@ def is_waiting(chat_id):
     cur = conn.cursor()
 
     cur.execute('SELECT is_waiting FROM usuario WHERE chat_id = %s;', (chat_id, ))
-    return cur.fetchone()[0]
+    ret = cur.fetchone()[0]
+
+    # Actualizamos la DB
+    cur.execute('UPDATE usuario SET is_waiting = false WHERE chat_id = %s;', (chat_id, ))
 
 
 #####################################
@@ -137,7 +140,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                         bot.sendMessage(chat_id, 'Se actualizó correctamente tu cuenta.')
 
                 except ValueError:
-                    bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje. Vuelve a intentarlo con el comando /start')
+                    bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje. Vuelve a intentarlo con el comando /login')
 
                 except psycopg2.DataError as e:
                     bot.sendMessage(chat_id, 'Ocurrió un error modificando la base de datos: <code>{}</code>'.format(e), parse_mode='HTML')
