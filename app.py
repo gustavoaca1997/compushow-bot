@@ -202,8 +202,33 @@ class ChatSesion(telepot.helper.ChatHandler):
     def on_callback_query(self, msg):
         query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
         r = requests.get(COMPUSHOW_URL + 'category/', params={'pk': query_data})
-        categoria = r.json()[0]
-        bot.sendMessage(from_id, "<b>{}</b>\n{}".format(categoria['fields']['name'], categoria['fields']['description']), parse_mode='HTML')
+        response = r.json()
+        categoria = response['categoria']
+        nominados = response['nominados']
+
+        nominados_set = []
+
+        for nominado in nominados:
+            # Nominado
+            nominado_set = ""
+            nominado_set += "<b>{} {}</b>".format(nominado['person']['name'], nominado['person']['surname'])
+
+            # Si hay persona extra:
+            if nominado['personOpt']:
+                nominado_set += ", <b>{} {}</b>".format(nominado['personOpt']['name'], nominado['personOpt']['surname'])
+
+
+            # Comentarios
+            nominado_set += "<ul>"
+            for nominate in nominado['nominate']:
+                nominado_set += "<li><i>{}</i></li>".format(nominate['fields']['comment'])
+            nominado_set += "</ul>"
+
+        bot.sendMessage(from_id, '''
+            <b>{}</b>\n{}
+            Nominados:
+            {}
+        '''.format(categoria['fields']['name'], categoria['fields']['description'], nominados_set), parse_mode='HTML')
 
 
 app = Flask(__name__)
