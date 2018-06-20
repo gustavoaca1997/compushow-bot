@@ -9,10 +9,10 @@ if __name__ == "__main__":
     # Creamos la tabla si no existe
     cur.execute("DROP TABLE IF EXISTS usuario;")
     cur.execute("CREATE TABLE usuario ( \
-        carnet CHAR(8) PRIMARY KEY, \
+        carnet CHAR(8) UNIQUE, \
         password VARCHAR(255), \
-        chat_id VARCHAR(255),\
-        is_waiting BOOL,\
+        chat_id VARCHAR(255) PRIMARY KEY,\
+        is_waiting BOOL DEFAULT false,\
         CHECK (carnet ~ '[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9]'));")
 
     conn.commit()

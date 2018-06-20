@@ -71,7 +71,7 @@ def save_user(usuario, password, chat_id):
     cur = conn.cursor()
 
     # Chequeamos si ya el usuario existe
-    cur.execute('SELECT carnet FROM usuario WHERE carnet = %s;', (usuario, ))
+    cur.execute('SELECT chat_id FROM usuario WHERE chat_id = %s;', (chat_id, ))
     usuario_guardado = cur.fetchone()
 
     # Si no está en la base de datos, insertar
@@ -85,7 +85,7 @@ def save_user(usuario, password, chat_id):
 
     # Si no, actualizamos
     else:
-        cur.execute('UPDATE usuario SET password = %s, chat_id = %s WHERE carnet = %s;', (password, chat_id, usuario, ))
+        cur.execute('UPDATE usuario SET password = %s, carnet = %s WHERE chat_id = %s;', (password, usuario, chat_id, ))
         conn.commit()
         cur.close()
         conn.close()
