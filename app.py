@@ -53,7 +53,13 @@ def is_login(text, chat_id):
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()
 
-        cur.execute('UPDATE usuario SET is_waiting = true WHERE chat_id = %s;', (chat_id, ))
+        cur.execute('SELECT chat_id FROM usuario WHERE chat_id = %s;', (chat_id, ))
+        usuario_guardado = cur.fetchone()
+
+        if usuario_guardado:
+            cur.execute('UPDATE usuario SET is_waiting = true WHERE chat_id = %s;', (chat_id, ))
+        else:
+            cur.execute('INSERT INTO usuario (chat_id) VALUES (%s);', (chat_id, ))
         conn.commit()
         cur.close()
         conn.close()
