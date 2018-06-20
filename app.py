@@ -226,6 +226,8 @@ class ChatSesion(telepot.helper.ChatHandler):
 
             nominados_set.append(nominado_set)
 
+        pprint(nominados_set)
+
         bot.sendMessage(from_id, '''
             <b>{}</b>\n{}
             Nominados:
