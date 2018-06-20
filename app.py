@@ -230,9 +230,10 @@ class ChatSesion(telepot.helper.ChatHandler):
 
             # Comentarios
             nominado_set += "\n"
-            for nominate in nominado['nominate']:
-                if nominate['fields']['comment']:
-                    nominado_set += "<i>{}</i>\n".format(nominate['fields']['comment'])
+            if nominado['nominate']:
+                for nominate in nominado['nominate']:
+                    if nominate['fields']['comment']:
+                        nominado_set += "<i>{}</i>\n".format(nominate['fields']['comment'])
             nominado_set += "\n"
 
             keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="votar", callback_data="/voto {}".format(nominado['nominee'][0]['pk']))]])
