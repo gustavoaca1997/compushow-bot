@@ -72,7 +72,7 @@ def save_user(usuario, password, chat_id):
 
     # Chequeamos si ya el usuario existe
     cur.execute('SELECT carnet FROM usuario WHERE carnet = %s;', (usuario, ))
-    usuario_guardado = cur.fetchone()[0]
+    usuario_guardado = cur.fetchone()
 
     # Si no está en la base de datos, insertar
     if not usuario_guardado:
