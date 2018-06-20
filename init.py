@@ -3,7 +3,7 @@ import os
 
 DATABASE_URL = os.environ['DATABASE_URL']
 if __name__ == "__main__":
-    conn = psycopg2.connect("dbname={}".format(DATABASE_URL), sslmode='require')
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()
 
     # Creamos la tabla si no existe
