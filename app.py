@@ -11,6 +11,8 @@ from flask import Flask, request
 from pprint import pprint
 from queue import Queue
 import psycopg2
+import request
+import json
 
 TOKEN = os.environ.get('TOKEN')
 URL = os.environ.get('URL')
@@ -23,6 +25,7 @@ PORT = os.environ.get('PORT')
 SECRET = '/bot' + TOKEN
 UPDATE_QUEUE = Queue()
 DATABASE_URL = os.environ['DATABASE_URL']
+COMPUSHOW_URL = os.environ.get('COMPUSHOW_URL')
 
 PLAYLIST_URL = 'https://open.spotify.com/user/gustavoaca1997/playlist/4Qb026FvM0ieNz4FEFgqUr'
 
@@ -31,7 +34,9 @@ HELP = """Bienvenid@ a la mejor experiencia del año:
 🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟
 🌸COMPUSHOW 2018🌈
 🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟
-Soy un bot creado para ayudarte en el proceso de votación. Lo primero que debes hacer es ejecutar el comando /login y seguir las instrucciones.
+Soy un bot creado para ayudarte en el proceso de votación. 
+Lo primero que debes hacer es ejecutar el comando /login y seguir las instrucciones.
+Para ver las categorías disponibles para votar, utiliza el comando /categorias.
 """
 
 #####################################
@@ -70,6 +75,10 @@ def is_login(text, chat_id):
 ## Funcion que chequea si el comando es /help
 def is_help(text):
     return is_command(text) and text[1:] == "help"
+
+## Funcion que chequea si el comando es /categorias
+def is_categoria(text):
+    return is_command(text) and text[1:] == "categorias"
 
 ## Funcion que guarda o actualiza en la base de datos el usuario con su contraseña
 def save_user(usuario, password, chat_id):
@@ -173,6 +182,12 @@ class ChatSesion(telepot.helper.ChatHandler):
 
             elif is_help(msg['text']):
                 bot.sendMessage(chat_id, HELP)
+
+            elif is_categoria(msg['text']):
+                r = request.get(COMPUSHOW_URL)
+                response = r.json()
+                for categoria in response:
+                    bot.sendMessage(chat_id, categoria['fields']['name'])
 
             else:
                 bot.sendMessage(chat_id, 'Si necesitas ayuda en como comunicarte conmigo, usa el comando /help mientras escuchas esta brutal playlist: {}'.format(PLAYLIST_URL))
