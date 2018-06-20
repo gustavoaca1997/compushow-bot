@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     # Creamos la tabla si no existe
     cur.execute("CREATE TABLE IF NOT EXISTS usuario ( \
-        carnet CHAR(7) PRIMARY KEY, \
+        carnet CHAR(8) PRIMARY KEY, \
         password VARCHAR(255), \
         CHECK (carnet LIKE '[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9]'));")
 
