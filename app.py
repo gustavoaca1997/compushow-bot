@@ -98,11 +98,11 @@ class ChatSesion(telepot.helper.ChatHandler):
                         bot.sendMessage(chat_id, 'Se actualizó correctamente tu cuenta.')
 
                 except:
-                    bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje. Vuelve a intentarlo con el comando \
+                    bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje. Vuelve a intentarlo con el comando\
                     /start')
 
             if is_start(msg['text']):
-                bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) \
+                bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula)\
                 separadas por un espacio.')
                 self.start = True
 
@@ -115,7 +115,7 @@ app = Flask(__name__)
 bot = telepot.DelegatorBot(TOKEN, [
     include_callback_query_chat_id(
         pave_event_space())(
-            per_chat_id(), create_open, ChatSesion, timeout=10),
+            per_chat_id(), create_open, ChatSesion, timeout=100),
 ])
 bot.message_loop(source=UPDATE_QUEUE)
 webhook = OrderedWebhook(bot)
