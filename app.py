@@ -217,8 +217,10 @@ class ChatSesion(telepot.helper.ChatHandler):
             response = r.json()
             if response.get('success', False):
                 bot.sendMessage(from_id, 'Voto registrado')
+                bot.answerCallbackQuery(query_id, 'Voto registrado')
             else:
                 bot.sendMessage(from_id, 'Ocurrió un error registrando el voto')
+                bot.answerCallbackQuery(query_id, 'Ocurrió un error registrando el voto')
             return
 
         r = requests.get(COMPUSHOW_URL + 'category/', params={'pk': query_data})
