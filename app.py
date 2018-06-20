@@ -87,6 +87,7 @@ class ChatSesion(telepot.helper.ChatHandler):
         # Si el mensaje es texto
         if content_type == 'text':
             if self.start:
+                self.start = False
                 try:
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
@@ -98,12 +99,10 @@ class ChatSesion(telepot.helper.ChatHandler):
                         bot.sendMessage(chat_id, 'Se actualizó correctamente tu cuenta.')
 
                 except:
-                    bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje. Vuelve a intentarlo con el comando\
-                    /start')
+                    bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje. Vuelve a intentarlo con el comando /start')
 
             if is_start(msg['text']):
-                bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula)\
-                separadas por un espacio.')
+                bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
                 self.start = True
 
 
