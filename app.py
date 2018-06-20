@@ -220,7 +220,8 @@ class ChatSesion(telepot.helper.ChatHandler):
         for nominado in nominados:
             # Nominado
             nominado_set = ""
-            nominado_set += "<b>{} {}</b>".format(nominado['person'][0]['fields']['name'], nominado['person'][0]['fields']['surname'])
+            if nominado['person']:
+                nominado_set += "<b>{} {}</b>".format(nominado['person'][0]['fields']['name'], nominado['person'][0]['fields']['surname'])
 
             # Si hay persona extra:
             if nominado['personOpt']:
