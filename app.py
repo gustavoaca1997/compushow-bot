@@ -103,6 +103,11 @@ def is_waiting(chat_id):
 
     # Actualizamos la DB
     cur.execute('UPDATE usuario SET is_waiting = false WHERE chat_id = %s;', (chat_id, ))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return ret
 
 
 #####################################
