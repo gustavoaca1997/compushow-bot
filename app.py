@@ -223,7 +223,7 @@ class ChatSesion(telepot.helper.ChatHandler):
             <b>{}</b>\n{}\n
             {}
             Nominados:
-        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description']), parse_mode='HTML')
+        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description'], categoria[0]['fields']['image']), parse_mode='HTML')
 
         for nominado in nominados:
             # Nominado
