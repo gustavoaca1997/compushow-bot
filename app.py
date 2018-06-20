@@ -199,12 +199,9 @@ class ChatSesion(telepot.helper.ChatHandler):
             else:
                 bot.sendMessage(chat_id, 'Si necesitas ayuda en como comunicarte conmigo, usa el comando /help mientras escuchas esta brutal playlist: {}'.format(PLAYLIST_URL))
 
-    def on_callback_query(msg):
+    def on_callback_query(self, msg):
         query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
         bot.answerCallbackQuery(query_id, text="Pk: {}".format(query_data))
-
-    def on_callback_query(self, msg):
-        pass
 
 
 app = Flask(__name__)
