@@ -43,7 +43,7 @@ def is_command(text):
     return len(text) > 0 and text[0] == '/'
 
 ## Funcion que checkea si el comando es /start
-def is_start(text):
+def is_login(text):
     return is_command(text) and text[1:] == "login"
 
 ## Funcion que chequea si el comando es /help
@@ -121,7 +121,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                 except psycopg2.DataError as e:
                     bot.sendMessage(chat_id, 'Ocurrió un error modificando la base de datos: <code>{}</code>'.format(e), parse_mode='HTML')
 
-            elif is_start(msg['text']):
+            elif is_login(msg['text']):
                 bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
                 self.start = True
 
