@@ -31,7 +31,7 @@ HELP = """Bienvenid@ a la mejor experiencia del año:
 🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟
 🌸COMPUSHOW 2018🌈
 🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟
-Soy un bot creado para ayudarte en el proceso de votación. Lo primero que debes hacer es ejecutar el comando /start y seguir las instrucciones.
+Soy un bot creado para ayudarte en el proceso de votación. Lo primero que debes hacer es ejecutar el comando /login y seguir las instrucciones.
 """
 
 #####################################
@@ -44,7 +44,7 @@ def is_command(text):
 
 ## Funcion que checkea si el comando es /start
 def is_start(text):
-    return is_command(text) and text[1:] == "start"
+    return is_command(text) and text[1:] == "login"
 
 ## Funcion que chequea si el comando es /help
 def is_help(text):
