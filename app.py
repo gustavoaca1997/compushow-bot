@@ -100,7 +100,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                     usuario, password = msg['text'].split()
 
                     # Guardamos en la base de datos
-                    if save_user(usuario, password, chat_id):
+                    if save_user(usuario, password, str(chat_id)):
                         bot.sendMessage(chat_id, 'Se registró exitosamente tu cuenta.')
                     else:
                         bot.sendMessage(chat_id, 'Se actualizó correctamente tu cuenta.')
