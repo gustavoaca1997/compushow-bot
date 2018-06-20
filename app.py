@@ -228,25 +228,23 @@ class ChatSesion(telepot.helper.ChatHandler):
             # Nominado
             nominado_set = ""
             if nominado['person']:
-                nominado_set += "<b>{} {}</b>".format(nominado['person'][0]['fields']['name'], nominado['person'][0]['fields']['surname'])
+                nominado_set += "<b>{} {}</b>".format(escape(nominado['person'][0]['fields']['name']), escape(nominado['person'][0]['fields']['surname']))
 
             # Si hay persona extra:
             if nominado['personOpt']:
-                nominado_set += ", <b>{} {}</b>".format(nominado['personOpt'][0]['fields']['name'], nominado['personOpt'][0]['fields']['surname'])
+                nominado_set += ", <b>{} {}</b>".format(escape(nominado['personOpt'][0]['fields']['name']), escape(nominado['personOpt'][0]['fields']['surname']))
 
             if nominado['nominee'] and nominado['nominee'][0]['fields']['extra']:
-                nominado_set += "\n<b>{}</b>".format(nominado['nominee'][0]['fields']['extra'])
+                nominado_set += "\n<b>{}</b>".format(escape(nominado['nominee'][0]['fields']['extra']))
             # Comentarios
             nominado_set += "\n"
             if nominado['nominate']:
                 for nominate in nominado['nominate']:
                     if nominate['fields']['comment']:
-                        nominado_set += "<i>{}</i>\n".format(nominate['fields']['comment'])
+                        nominado_set += "<i>{}</i>\n".format(escape(nominate['fields']['comment']))
             nominado_set += "\n"
 
             keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="votar", callback_data="/voto {}".format(nominado['nominee'][0]['pk']))]])
-
-            nominado_set = escape(nominado_set)
 
             bot.sendMessage(from_id, nominado_set, reply_markup=keyboard, parse_mode='HTML')
 
