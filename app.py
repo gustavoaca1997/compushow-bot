@@ -189,7 +189,7 @@ class ChatSesion(telepot.helper.ChatHandler):
 
                 inline_keyboard = []
                 for categoria in response:
-                    inline_keyboard.append([InlineKeyboardButton(text=categoria['fields']['name'], callback_data=str(categoria))])
+                    inline_keyboard.append([InlineKeyboardButton(text=categoria['fields']['name'], callback_data=categoria['pk'])])
 
                 keyboard = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
                 bot.sendMessage(chat_id, 'Categorías:', reply_markup=keyboard)
@@ -201,7 +201,8 @@ class ChatSesion(telepot.helper.ChatHandler):
 
     def on_callback_query(self, msg):
         query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
-        categoria = json.loads(query_data)
+        r = requests.get(COMPUSHOW_URL + 'category/', params={'pk': query_data})
+        categoria = r.json()[0]
         bot.sendMessage(from_id, "<b>{}</b><br>{}".format(categoria['fields']['name'], categoria['fields']['description']), parse_mode='HTML')
 
 
