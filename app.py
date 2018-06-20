@@ -39,6 +39,27 @@ Lo primero que debes hacer es ejecutar el comando /login y seguir las instruccio
 Para ver las categorías disponibles para votar, utiliza el comando /categorias.
 """
 
+## Diccionario de emojis
+EMOJIS = {
+    'CompuAdoptado': '👶',
+    'CompuBully': '😈',
+    'CompuButt': '🍑',
+    'CompuCartoon': '🐼',
+    'CompuCono': '🚧',
+    'CompuLolas': '👙',
+    'CompuFitness': '🏃‍♀🏃‍♂',
+    'CompuGordito': '🍔',
+    'CompuLove': '💑',
+    'CompuMaster': '👩‍🏫👨‍🏫',
+    'CompuMami': '👸🏽',
+    'CompuPapi': '🙎🏻‍♂️',
+    'CompuPro': '💪🏼',
+    'CompuProductista': '👷🏻‍♂',
+    'CompuTukky': '👨🏾‍🎤',
+    'CompuTeam': '👱🏽‍♀👨🏼🧑🏾👩🏻',
+    'CompuChévere': '👻'
+}
+
 #####################################
 ########### Funciones ###############
 #####################################
@@ -196,7 +217,8 @@ class ChatSesion(telepot.helper.ChatHandler):
                         count = 0
                         idx += 1
                         inline_keyboard.append([])
-                    inline_keyboard[idx].append(InlineKeyboardButton(text=categoria['fields']['name'], callback_data=categoria['pk']))
+                    msg = categoria['fields']['name'] + EMOJIS[categoria['fields']['name']]
+                    inline_keyboard[idx].append(InlineKeyboardButton(text=msg, callback_data=categoria['pk']))
                     count += 1
 
                 keyboard = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
