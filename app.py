@@ -99,7 +99,12 @@ def is_waiting(chat_id):
     cur = conn.cursor()
 
     cur.execute('SELECT is_waiting FROM usuario WHERE chat_id = %s;', (chat_id, ))
-    ret = cur.fetchone()[0]
+
+    row = cur.fetchone()
+    if row:
+        ret = row[0]
+    else:
+        ret = False
 
     # Actualizamos la DB
     cur.execute('UPDATE usuario SET is_waiting = false WHERE chat_id = %s;', (chat_id, ))
