@@ -126,7 +126,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                 bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
                 self.start = True
 
-            else if is_help(msg['text']):
+            elif is_help(msg['text']):
                 bot.sendMessage(chat_id, HELP)
 
 
