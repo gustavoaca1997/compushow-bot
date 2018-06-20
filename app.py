@@ -95,6 +95,7 @@ class ChatSesion(telepot.helper.ChatHandler):
 
     # Manejador de mensajes
     def on_chat_message(self, msg):
+        pprint(usuarios_esperando)
         # Imprimir en consola mensaje recibido
         print('Mensaje recibido:')
         pprint(msg)
