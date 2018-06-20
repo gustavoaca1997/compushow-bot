@@ -222,7 +222,7 @@ class ChatSesion(telepot.helper.ChatHandler):
             nominado_set += "\n"
             for nominate in nominado['nominate']:
                 if nominate['fields']['comment']:
-                    nominado_set += "<i>{}</i>".format(nominate['fields']['comment'])
+                    nominado_set += "{}".format(nominate['fields']['comment'])
             nominado_set += "\n"
 
             nominados_set.append(nominado_set)
@@ -230,7 +230,7 @@ class ChatSesion(telepot.helper.ChatHandler):
         pprint(nominados_set)
 
         bot.sendMessage(from_id, '''
-            <b>{}</b>\n{}
+            <b>{}</b>\n{}\n
             Nominados:
             {}
         '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description'], str(nominados_set)), parse_mode='HTML')
