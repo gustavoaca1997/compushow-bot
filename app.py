@@ -224,6 +224,8 @@ class ChatSesion(telepot.helper.ChatHandler):
                 nominado_set += "<li><i>{}</i></li>".format(nominate['fields']['comment'])
             nominado_set += "</ul>"
 
+            nominados_set.append(nominado_set)
+
         bot.sendMessage(from_id, '''
             <b>{}</b>\n{}
             Nominados:
