@@ -98,7 +98,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                 try:
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
-
+                    bot.sendMessage(chat_id, 'Te avisaré cuando termine de editar la base de datos y si ocurrió un error en el proceso :)')
                     # Guardamos en la base de datos
                     if save_user(usuario, password, str(chat_id)):
                         bot.sendMessage(chat_id, 'Se registró exitosamente tu cuenta.')
