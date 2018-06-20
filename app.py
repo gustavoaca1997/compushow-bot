@@ -35,6 +35,11 @@ Soy un bot creado para ayudarte en el proceso de votación. Lo primero que debes
 """
 
 #####################################
+############ Variables Globales######
+#####################################
+usuarios_esperando = {}
+
+#####################################
 ########### Funciones ###############
 #####################################
 
@@ -78,11 +83,7 @@ def save_user(usuario, password, chat_id):
 
 ## Funcion que chequea si se está esperando que el usuario envíe sus datos de usuario
 def is_waiting(chat_id):
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    cur = conn.cursor()
-
-    cur.execute('SELECT is_waiting FROM usuario WHERE chat_id = %s;', (chat_id, ))
-    return cur.fetchone()[0]
+    return usuarios_esperando.get(chat_id, False)
 
 #####################################
 ############### Bot #################
@@ -109,6 +110,9 @@ class ChatSesion(telepot.helper.ChatHandler):
         # Si el mensaje es texto
         if content_type == 'text':
             if is_waiting(str(chat_id)):
+                # Actualizamos diccionario
+                usuarios_esperando[chat_id] = False
+
                 try:
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
@@ -125,7 +129,8 @@ class ChatSesion(telepot.helper.ChatHandler):
                     bot.sendMessage(chat_id, 'Ocurrió un error modificando la base de datos: <code>{}</code>'.format(e), parse_mode='HTML')
 
             elif is_login(msg['text']):
-                self.start = True
+                # Actualizamos el diccionario
+                usuarios_esperando[chat_id] = True
                 bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
 
             elif is_help(msg['text']):

@@ -12,7 +12,6 @@ if __name__ == "__main__":
         carnet CHAR(8) PRIMARY KEY, \
         password VARCHAR(255), \
         chat_id VARCHAR(255),\
-        is_waiting BOOL,\
         CHECK (carnet ~ '[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9]'));")
 
     conn.commit()
