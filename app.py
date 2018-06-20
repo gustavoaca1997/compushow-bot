@@ -230,7 +230,7 @@ class ChatSesion(telepot.helper.ChatHandler):
             <b>{}</b>\n{}
             Nominados:
             {}
-        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description'], nominados_set), parse_mode='HTML')
+        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description'], str(nominados_set)), parse_mode='HTML')
 
 
 app = Flask(__name__)
