@@ -230,10 +230,10 @@ class ChatSesion(telepot.helper.ChatHandler):
         pprint(nominados_set)
 
         bot.sendMessage(from_id, '''
-            <b>{}</b>\n{}\n
+            {}\n{}\n
             Nominados:
             {}
-        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description'], str(nominados_set)), parse_mode='HTML')
+        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description'], str(nominados_set)))
 
 
 app = Flask(__name__)
