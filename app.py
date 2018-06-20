@@ -12,6 +12,7 @@ from pprint import pprint
 from queue import Queue
 import psycopg2
 import json
+from html import escape
 
 TOKEN = os.environ.get('TOKEN')
 URL = os.environ.get('URL')
@@ -212,30 +213,30 @@ class ChatSesion(telepot.helper.ChatHandler):
         nominados = response['nominados']
 
         bot.sendMessage(from_id, '''
-            {}\n{}\n
+            <b>{}</b>\n{}\n
             Nominados:
-        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description']))
+        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description']), parse_mode='HTML')
 
         for nominado in nominados:
             # Nominado
             nominado_set = ""
-            nominado_set += "{} {}".format(nominado['person'][0]['fields']['name'], nominado['person'][0]['fields']['surname'])
+            nominado_set += "<b>{} {}</b>".format(nominado['person'][0]['fields']['name'], nominado['person'][0]['fields']['surname'])
 
             # Si hay persona extra:
             if nominado['personOpt']:
-                nominado_set += ", {} {}".format(nominado['personOpt'][0]['fields']['name'], nominado['personOpt'][0]['fields']['surname'])
+                nominado_set += ", <b>{} {}</b>".format(nominado['personOpt'][0]['fields']['name'], nominado['personOpt'][0]['fields']['surname'])
 
 
             # Comentarios
             nominado_set += "\n"
             for nominate in nominado['nominate']:
                 if nominate['fields']['comment']:
-                    nominado_set += "{}\n".format(nominate['fields']['comment'])
+                    nominado_set += "<i>{}</i>\n".format(nominate['fields']['comment'])
             nominado_set += "\n"
 
             keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="votar", callback_data="/voto {}".format(nominado['nominee'][0]['pk']))]])
 
-            bot.sendMessage(from_id, nominado_set, reply_markup=keyboard)
+            bot.sendMessage(from_id, nominado_set, reply_markup=keyboard, parse_mode='HTML')
 
         # inline_keyboard = []
         # for categoria in response:
