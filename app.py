@@ -131,6 +131,8 @@ class ChatSesion(telepot.helper.ChatHandler):
             else:
                 bot.sendMessage(chat_id, 'Si necesitas ayuda en como comunicarte conmigo, usa el comando /help mientras escuchas esta brutal playlist: {}'.format(PLAYLIST_URL))
 
+            print('start:', self.start)
+
 
 
     def on_callback_query(self, msg):
