@@ -56,7 +56,7 @@ EMOJIS = {
     'CompuPro': '💪🏼',
     'CompuProductista': '👷🏻‍♂',
     'CompuTukky': '👨🏾‍🎤',
-    'CompuTeam': '👱🏽‍♀👨🏼🧑🏾👩🏻',
+    'CompuTeam': '👱🏽‍♀👨👩🏻',
     'CompuChévere': '👻'
 }
 
@@ -213,7 +213,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                 count = 0
                 idx = 0
                 for categoria in response:
-                    if count > 2:
+                    if count > 1:
                         count = 0
                         idx += 1
                         inline_keyboard.append([])
