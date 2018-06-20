@@ -210,14 +210,24 @@ class ChatSesion(telepot.helper.ChatHandler):
     def on_callback_query(self, msg):
         query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
 
+        ## Si se recibió un voto
         if query_data.split()[0] == "/voto":
-            bot.sendMessage(from_id, "Voto recibido")
+            r = requests.post(COMPUSHOW_URL + 'voting_from_bot', data={'nominee': query_data.split()[1]})
+            response = r.json()
+            if response.get('success', False):
+                bot.answerCallbackQuery(query_id, text='voto registrado')
+                bot.sendMessage(query_id, 'Voto registrado')
+            else:
+                bot.answerCallbackQuery(query_id, text='error al votar')
+                bot.sendMessage(query_id, 'Voto registrado')
             return
 
         r = requests.get(COMPUSHOW_URL + 'category/', params={'pk': query_data})
         response = r.json()
         categoria = response['categoria']
         nominados = response['nominados']
+
+        bot.answerCallbackQuery(query_id, text=categoria[0]['fields']['name'])
 
         bot.sendMessage(from_id, '''
             <b>{}</b>\n{}\nNominados:
