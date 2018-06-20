@@ -221,6 +221,7 @@ class ChatSesion(telepot.helper.ChatHandler):
 
         bot.sendMessage(from_id, '''
             <b>{}</b>\n{}\n
+            {}
             Nominados:
         '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description']), parse_mode='HTML')
 
