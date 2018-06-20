@@ -201,12 +201,20 @@ class ChatSesion(telepot.helper.ChatHandler):
 
     def on_callback_query(self, msg):
         query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
+
+        if query_data.split()[0] == "/voto":
+            bot.sendMessage(from_id, "Voto recibido")
+            return
+
         r = requests.get(COMPUSHOW_URL + 'category/', params={'pk': query_data})
         response = r.json()
         categoria = response['categoria']
         nominados = response['nominados']
 
-        nominados_set = []
+        bot.sendMessage(from_id, '''
+            {}\n{}\n
+            Nominados:
+        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description']))
 
         for nominado in nominados:
             # Nominado
@@ -225,15 +233,16 @@ class ChatSesion(telepot.helper.ChatHandler):
                     nominado_set += "{}\n".format(nominate['fields']['comment'])
             nominado_set += "\n"
 
-            nominados_set.append(nominado_set)
+            keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="votar",, callback_data="/voto {}".format(nominado['nominee'][0]['pk']))]])
 
-        pprint(nominados_set)
+            bot.sendMessage(from_id, nominado_set, reply_markup=keyboard)
 
-        bot.sendMessage(from_id, '''
-            {}\n{}\n
-            Nominados:
-            {}
-        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description'], str(nominados_set)))
+        # inline_keyboard = []
+        # for categoria in response:
+        #     inline_keyboard.append([InlineKeyboardButton(text=categoria['fields']['name'], callback_data=categoria['pk'])])
+
+        # keyboard = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
+        # bot.sendMessage(chat_id, 'Categorías:', reply_markup=keyboard)
 
 
 app = Flask(__name__)
