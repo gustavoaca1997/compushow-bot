@@ -227,7 +227,8 @@ class ChatSesion(telepot.helper.ChatHandler):
             if nominado['personOpt']:
                 nominado_set += ", <b>{} {}</b>".format(nominado['personOpt'][0]['fields']['name'], nominado['personOpt'][0]['fields']['surname'])
 
-
+            if nominado['nominee']:
+                nominado_set += "\n<b>{}</b>".format(nominado['nominee'][0]['fields']['extra'])
             # Comentarios
             nominado_set += "\n"
             if nominado['nominate']:
