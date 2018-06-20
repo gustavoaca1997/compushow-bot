@@ -35,11 +35,6 @@ Soy un bot creado para ayudarte en el proceso de votación. Lo primero que debes
 """
 
 #####################################
-############ Variables Globales######
-#####################################
-usuarios_esperando = {}
-
-#####################################
 ########### Funciones ###############
 #####################################
 
@@ -47,9 +42,24 @@ usuarios_esperando = {}
 def is_command(text):
     return len(text) > 0 and text[0] == '/'
 
-## Funcion que checkea si el comando es /start
-def is_login(text):
-    return is_command(text) and text[1:] == "login"
+## Funcion que checkea si el comando es /login
+def is_login(text, chat_id):
+    chat_id = str(chat_id)
+    ret = is_command(text) and text[1:] == "login"
+
+    # Si es /login
+    if ret:
+        # Actualizamos la base de datos
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        cur = conn.cursor()
+
+        cur.execute('UPDATE usuario SET is_waiting = true WHERE chat_id = %s;', (chat_id, ))
+        conn.commit()
+        cur.close()
+        conn.close()
+
+    return ret
+
 
 ## Funcion que chequea si el comando es /help
 def is_help(text):
@@ -83,7 +93,14 @@ def save_user(usuario, password, chat_id):
 
 ## Funcion que chequea si se está esperando que el usuario envíe sus datos de usuario
 def is_waiting(chat_id):
-    return usuarios_esperando.get(chat_id, False)
+    # return usuarios_esperando.get(chat_id, False)
+    chat_id = str(chat_id)
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur = conn.cursor()
+
+    cur.execute('SELECT is_waiting FROM usuario WHERE chat_id = %s;', (chat_id, ))
+    return cur.fetchone()[0]
+
 
 #####################################
 ############### Bot #################
@@ -95,7 +112,6 @@ class ChatSesion(telepot.helper.ChatHandler):
 
     # Manejador de mensajes
     def on_chat_message(self, msg):
-        pprint(usuarios_esperando)
         # Imprimir en consola mensaje recibido
         print('Mensaje recibido:')
         pprint(msg)
@@ -111,9 +127,6 @@ class ChatSesion(telepot.helper.ChatHandler):
         # Si el mensaje es texto
         if content_type == 'text':
             if is_waiting(chat_id):
-                # Actualizamos diccionario
-                usuarios_esperando[chat_id] = False
-
                 try:
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
@@ -129,9 +142,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                 except psycopg2.DataError as e:
                     bot.sendMessage(chat_id, 'Ocurrió un error modificando la base de datos: <code>{}</code>'.format(e), parse_mode='HTML')
 
-            elif is_login(msg['text']):
-                # Actualizamos el diccionario
-                usuarios_esperando[chat_id] = True
+            elif is_login(msg['text'], chat_id):
                 bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
 
             elif is_help(msg['text']):
