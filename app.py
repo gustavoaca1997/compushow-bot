@@ -51,7 +51,7 @@ def save_user(usuario, password, chat_id):
 
     # Si no está en la base de datos, insertar
     if not usuario_guardado:
-        cur.execute('INSERT INTO usuario (carnet, password, chat_id) VALUES (%s, %s);', (usuario, password, chat_id, ))
+        cur.execute('INSERT INTO usuario (carnet, password, chat_id) VALUES (%s, %s, %s);', (usuario, password, chat_id, ))
 
         conn.commit()
         cur.close()
