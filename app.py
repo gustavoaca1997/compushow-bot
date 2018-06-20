@@ -105,8 +105,11 @@ class ChatSesion(telepot.helper.ChatHandler):
                     else:
                         bot.sendMessage(chat_id, 'Se actualizó correctamente tu cuenta.')
 
-                except:
+                except ValueError:
                     bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje. Vuelve a intentarlo con el comando /start')
+
+                except psycopg2.DataError as e:
+                    bot.sendMessage(chat_id, 'Ocurrió un error modificando la base de datos: <code>{}</code>'.format(e), parse_mode='HTML')
 
             if is_start(msg['text']):
                 bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
