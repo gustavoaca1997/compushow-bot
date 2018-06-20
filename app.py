@@ -52,11 +52,18 @@ def save_user(usuario, password):
     # Si no está en la base de datos, insertar
     if not usuario_guardado:
         cur.execute('INSERT INTO usuario (carnet, password) VALUES (%s, %s);', (usuario, password, ))
+
+        conn.commit()
+        cur.close()
+        conn.close()
         return 1
 
     # Si no, actualizamos
     else:
         cur.execute('UPDATE usuario SET password = %s WHERE carnet = %s;', (password, usuario, ))
+        conn.commit()
+        cur.close()
+        conn.close()
         return 0
 
 #####################################
