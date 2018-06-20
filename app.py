@@ -221,7 +221,8 @@ class ChatSesion(telepot.helper.ChatHandler):
             # Comentarios
             nominado_set += "\n"
             for nominate in nominado['nominate']:
-                nominado_set += "<i>{}</i>".format(nominate['fields']['comment'])
+                if nominate['fields']['comment']:
+                    nominado_set += "<i>{}</i>".format(nominate['fields']['comment'])
             nominado_set += "\n"
 
             nominados_set.append(nominado_set)
