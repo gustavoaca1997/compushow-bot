@@ -41,7 +41,7 @@ def is_start(text):
     return is_command(text) and text[1:] == "start"
 
 ## Funcion que guarda o actualiza en la base de datos el usuario con su contraseña
-def save_user(usuario, password):
+def save_user(usuario, password, chat_id):
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()
 
@@ -51,7 +51,7 @@ def save_user(usuario, password):
 
     # Si no está en la base de datos, insertar
     if not usuario_guardado:
-        cur.execute('INSERT INTO usuario (carnet, password) VALUES (%s, %s);', (usuario, password, ))
+        cur.execute('INSERT INTO usuario (carnet, password, chat_id) VALUES (%s, %s);', (usuario, password, chat_id, ))
 
         conn.commit()
         cur.close()
@@ -60,7 +60,7 @@ def save_user(usuario, password):
 
     # Si no, actualizamos
     else:
-        cur.execute('UPDATE usuario SET password = %s WHERE carnet = %s;', (password, usuario, ))
+        cur.execute('UPDATE usuario SET password = %s, chat_id = %s WHERE carnet = %s;', (password, chat_id, usuario, ))
         conn.commit()
         cur.close()
         conn.close()
@@ -100,7 +100,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                     usuario, password = msg['text'].split()
 
                     # Guardamos en la base de datos
-                    if save_user(usuario, password):
+                    if save_user(usuario, password, chat_id):
                         bot.sendMessage(chat_id, 'Se registró exitosamente tu cuenta.')
                     else:
                         bot.sendMessage(chat_id, 'Se actualizó correctamente tu cuenta.')
