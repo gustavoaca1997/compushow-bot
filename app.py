@@ -211,18 +211,18 @@ class ChatSesion(telepot.helper.ChatHandler):
         for nominado in nominados:
             # Nominado
             nominado_set = ""
-            nominado_set += "<b>{} {}</b>".format(nominado['person'][0]['fields']['name'], nominado['person'][0]['fields']['surname'])
+            nominado_set += "{} {}".format(nominado['person'][0]['fields']['name'], nominado['person'][0]['fields']['surname'])
 
             # Si hay persona extra:
             if nominado['personOpt']:
-                nominado_set += ", <b>{} {}</b>".format(nominado['personOpt'][0]['fields']['name'], nominado['personOpt'][0]['fields']['surname'])
+                nominado_set += ", {} {}".format(nominado['personOpt'][0]['fields']['name'], nominado['personOpt'][0]['fields']['surname'])
 
 
             # Comentarios
             nominado_set += "\n"
             for nominate in nominado['nominate']:
                 if nominate['fields']['comment']:
-                    nominado_set += "{}".format(nominate['fields']['comment'])
+                    nominado_set += "{}\n".format(nominate['fields']['comment'])
             nominado_set += "\n"
 
             nominados_set.append(nominado_set)
