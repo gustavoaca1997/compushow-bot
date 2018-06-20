@@ -183,8 +183,8 @@ class ChatSesion(telepot.helper.ChatHandler):
                 bot.sendMessage(chat_id, HELP)
 
             elif is_categoria(msg['text']):
-                r = requests.get(COMPUSHOW_URL)
-                response = json.loads(r.text)
+                r = requests.get(COMPUSHOW_URL + 'categories/')
+                response = r.json()
                 for categoria in response:
                     bot.sendMessage(chat_id, categoria['fields']['name'])
 
