@@ -220,10 +220,11 @@ class ChatSesion(telepot.helper.ChatHandler):
         nominados = response['nominados']
 
         bot.sendMessage(from_id, '''
-            <b>{}</b>\n{}\n
+            <b>{}</b>
+            {}
             {}
             Nominados:
-        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description'], categoria[0]['fields']['image']), parse_mode='HTML')
+        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description'], COMPUSHOW_URL+'/'+categoria[0]['fields']['image']), parse_mode='HTML')
 
         for nominado in nominados:
             # Nominado
