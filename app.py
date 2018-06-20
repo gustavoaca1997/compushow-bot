@@ -11,7 +11,6 @@ from flask import Flask, request
 from pprint import pprint
 from queue import Queue
 import psycopg2
-import request as req
 import json
 
 TOKEN = os.environ.get('TOKEN')
@@ -184,7 +183,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                 bot.sendMessage(chat_id, HELP)
 
             elif is_categoria(msg['text']):
-                r = req.get(COMPUSHOW_URL)
+                r = requests.get(COMPUSHOW_URL)
                 response = r.json()
                 for categoria in response:
                     bot.sendMessage(chat_id, categoria['fields']['name'])
