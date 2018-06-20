@@ -7,10 +7,11 @@ if __name__ == "__main__":
     cur = conn.cursor()
 
     # Creamos la tabla si no existe
-    cur.execute("CREATE TABLE IF NOT EXISTS usuario ( \
+    cur.execute("DROP TABLE IF EXISTS usuario;")
+    cur.execute("CREATE TABLE usuario ( \
         carnet CHAR(8) PRIMARY KEY, \
         password VARCHAR(255), \
-        CHECK (carnet LIKE '[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9]'));")
+        CHECK (carnet ~ '[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9]'));")
 
     conn.commit()
     cur.close()
