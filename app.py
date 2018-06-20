@@ -228,29 +228,25 @@ class ChatSesion(telepot.helper.ChatHandler):
 
         bot.answerCallbackQuery(query_id, text=categoria[0]['fields']['name'])
 
-        bot.sendMessage(from_id, '''
-            <b>{}</b>\n{}\nNominados:
-        '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description']), parse_mode='HTML')
-
         nominados_btns = []
         for nominado in nominados:
             # Nominado
             nominado_set = ""
             if nominado['person']:
-                nominado_set += "<b>{} {}</b>".format(escape(nominado['person'][0]['fields']['name']), escape(nominado['person'][0]['fields']['surname']))
+                nominado_set += "{} {}".format(escape(nominado['person'][0]['fields']['name']), escape(nominado['person'][0]['fields']['surname']))
 
             # Si hay persona extra:
             if nominado['personOpt']:
-                nominado_set += ", <b>{} {}</b>".format(escape(nominado['personOpt'][0]['fields']['name']), escape(nominado['personOpt'][0]['fields']['surname']))
+                nominado_set += ", {} {}".format(escape(nominado['personOpt'][0]['fields']['name']), escape(nominado['personOpt'][0]['fields']['surname']))
 
             if nominado['nominee'] and nominado['nominee'][0]['fields']['extra']:
-                nominado_set += "\n<b>{}</b>".format(escape(nominado['nominee'][0]['fields']['extra']))
+                nominado_set += "\n{}".format(escape(nominado['nominee'][0]['fields']['extra']))
 
             nominados_btns.append([InlineKeyboardButton(text=nominado_set, callback_data="/voto {}".format(nominado['nominee'][0]['pk']))])
 
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=nominados_btns)
-        bot.sendMessage(from_id, nominado_set, reply_markup=keyboard, parse_mode='HTML')
+        bot.sendMessage(from_id, '<b>{}</b>\n{}\nNominados:'.format(categoria[0]['fields']['name'], categoria[0]['fields']['description']), reply_markup=keyboard, parse_mode='HTML')
 
         # inline_keyboard = []
         # for categoria in response:
