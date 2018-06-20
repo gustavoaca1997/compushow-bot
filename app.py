@@ -25,8 +25,6 @@ UPDATE_QUEUE = Queue()
 DATABASE_URL = os.environ['DATABASE_URL']
 
 PLAYLIST_URL = 'https://open.spotify.com/user/gustavoaca1997/playlist/4Qb026FvM0ieNz4FEFgqUr'
-MSG_PLAYLIST = 'No estoy seguro de que me pides, pero seguro quieres escuchar esta maravillosa playlist: {}'\
-    .format(PLAYLIST_URL)
 
 ## Mensaje de ayuda
 HELP = """Bienvenid@ a la mejor experiencia del año: 
@@ -128,6 +126,9 @@ class ChatSesion(telepot.helper.ChatHandler):
 
             elif is_help(msg['text']):
                 bot.sendMessage(chat_id, HELP)
+
+            else:
+                bot.sendMessage(chat_id, 'Si necesitas ayuda en como comunicarte conmigo, usa el comando /help mientras escuchas esta brutal playlist: {}'.format(PLAYLIST_URL))
 
 
 
