@@ -42,7 +42,7 @@ def is_start(text):
 
 ## Funcion que guarda o actualiza en la base de datos el usuario con su contraseña
 def save_user(usuario, password):
-    conn = psycopg2.connect("dbname={}".format(DATABASE_URL), sslmode='require')
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()
 
     # Chequeamos si ya el usuario existe
