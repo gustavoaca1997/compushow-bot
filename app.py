@@ -108,7 +108,7 @@ class ChatSesion(telepot.helper.ChatHandler):
 
         # Si el mensaje es texto
         if content_type == 'text':
-            if is_waiting(chat_id):
+            if is_waiting(str(chat_id)):
                 try:
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
