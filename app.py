@@ -149,6 +149,9 @@ class ChatSesion(telepot.helper.ChatHandler):
 
                 except psycopg2.DataError as e:
                     bot.sendMessage(chat_id, 'Ocurrió un error modificando la base de datos: <code>{}</code>'.format(e), parse_mode='HTML')
+                
+                except psycopg2.IntegrityError as e:
+                    bot.sendMessage(chat_id, 'Ocurrió un error guardando los datos: <code>{}</code>'.format(e), parse_mode='HTML')
 
             elif is_login(msg['text'], chat_id):
                 bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
