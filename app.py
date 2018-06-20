@@ -232,6 +232,7 @@ class ChatSesion(telepot.helper.ChatHandler):
             <b>{}</b>\n{}\nNominados:
         '''.format(categoria[0]['fields']['name'], categoria[0]['fields']['description']), parse_mode='HTML')
 
+        nominados_btns = []
         for nominado in nominados:
             # Nominado
             nominado_set = ""
@@ -244,17 +245,12 @@ class ChatSesion(telepot.helper.ChatHandler):
 
             if nominado['nominee'] and nominado['nominee'][0]['fields']['extra']:
                 nominado_set += "\n<b>{}</b>".format(escape(nominado['nominee'][0]['fields']['extra']))
-            # Comentarios
-            nominado_set += "\n"
-            if nominado['nominate']:
-                for nominate in nominado['nominate']:
-                    if nominate['fields']['comment']:
-                        nominado_set += "<i>{}</i>\n".format(escape(nominate['fields']['comment']))
-            nominado_set += "\n"
 
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="votar", callback_data="/voto {}".format(nominado['nominee'][0]['pk']))]])
+            nominados_btns.append([InlineKeyboardButton(text=nominado_set, callback_data="/voto {}".format(nominado['nominee'][0]['pk']))])
 
-            bot.sendMessage(from_id, nominado_set, reply_markup=keyboard, parse_mode='HTML')
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=nominados_btns)
+        bot.sendMessage(from_id, nominado_set, reply_markup=keyboard, parse_mode='HTML')
 
         # inline_keyboard = []
         # for categoria in response:
