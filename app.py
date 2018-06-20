@@ -203,7 +203,7 @@ class ChatSesion(telepot.helper.ChatHandler):
         query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
         r = requests.get(COMPUSHOW_URL + 'category/', params={'pk': query_data})
         categoria = r.json()[0]
-        bot.sendMessage(from_id, "<b>{}</b><br />{}".format(categoria['fields']['name'], categoria['fields']['description']), parse_mode='HTML')
+        bot.sendMessage(from_id, "<b>{}</b>\n{}".format(categoria['fields']['name'], categoria['fields']['description']), parse_mode='HTML')
 
 
 app = Flask(__name__)
