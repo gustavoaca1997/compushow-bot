@@ -122,8 +122,8 @@ class ChatSesion(telepot.helper.ChatHandler):
                     bot.sendMessage(chat_id, 'Ocurrió un error modificando la base de datos: <code>{}</code>'.format(e), parse_mode='HTML')
 
             elif is_login(msg['text']):
-                bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
                 self.start = True
+                bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
 
             elif is_help(msg['text']):
                 bot.sendMessage(chat_id, HELP)
