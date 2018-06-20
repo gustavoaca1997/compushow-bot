@@ -91,6 +91,7 @@ class ChatSesion(telepot.helper.ChatHandler):
     def on_chat_message(self, msg):
         # Imprimir en consola mensaje recibido
         print('Mensaje recibido:')
+        print('start: ', self.start)
         pprint(msg)
 
         # Obtener info basica del mensaje
@@ -120,7 +121,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                 except psycopg2.DataError as e:
                     bot.sendMessage(chat_id, 'Ocurrió un error modificando la base de datos: <code>{}</code>'.format(e), parse_mode='HTML')
 
-            if is_start(msg['text']):
+            elif is_start(msg['text']):
                 bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
                 self.start = True
 
