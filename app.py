@@ -189,8 +189,15 @@ class ChatSesion(telepot.helper.ChatHandler):
                 response = r.json()
 
                 inline_keyboard = [[]]
+                count = 0
+                idx = 0
                 for categoria in response:
-                    inline_keyboard[0].append(InlineKeyboardButton(text=categoria['fields']['name'], callback_data=categoria['pk']))
+                    if count > 2:
+                        count = 0
+                        idx++
+                        inline_keyboard.append([])
+                    inline_keyboard[idx].append(InlineKeyboardButton(text=categoria['fields']['name'], callback_data=categoria['pk']))
+                    count++;
 
                 keyboard = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
                 bot.sendMessage(chat_id, 'Categorías:', reply_markup=keyboard)
