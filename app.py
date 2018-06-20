@@ -28,6 +28,14 @@ PLAYLIST_URL = 'https://open.spotify.com/user/gustavoaca1997/playlist/4Qb026FvM0
 MSG_PLAYLIST = 'No estoy seguro de que me pides, pero seguro quieres escuchar esta maravillosa playlist: {}'\
     .format(PLAYLIST_URL)
 
+## Mensaje de ayuda
+HELP = """Bienvenid@ a la mejor experiencia del año: 
+🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟
+🌸COMPUSHOW 2018🌈
+🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟
+Soy un bot creado para ayudarte en el proceso de votación. Lo primero que debes hacer es ejecutar el comando /start y seguir las instrucciones.
+"""
+
 #####################################
 ########### Funciones ###############
 #####################################
@@ -39,6 +47,10 @@ def is_command(text):
 ## Funcion que checkea si el comando es /start
 def is_start(text):
     return is_command(text) and text[1:] == "start"
+
+## Funcion que chequea si el comando es /help
+def is_help(text):
+    return is_command(text) and text[1:] == "help"
 
 ## Funcion que guarda o actualiza en la base de datos el usuario con su contraseña
 def save_user(usuario, password, chat_id):
@@ -93,8 +105,6 @@ class ChatSesion(telepot.helper.ChatHandler):
 
         # Si el mensaje es texto
         if content_type == 'text':
-
-            print('start', self.start)
             if self.start:
                 self.start = False
                 try:
@@ -115,6 +125,10 @@ class ChatSesion(telepot.helper.ChatHandler):
             if is_start(msg['text']):
                 bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
                 self.start = True
+
+            else if is_help(msg['text']):
+                bot.sendMessage(chat_id, HELP)
+
 
 
     def on_callback_query(self, msg):
