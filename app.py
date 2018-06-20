@@ -189,7 +189,7 @@ class ChatSesion(telepot.helper.ChatHandler):
 
                 inline_keyboard = []
                 for categoria in response:
-                    inline_keyboard.push([InlineKeyboardButton(text=categoria['fields']['name'], callback_data=categoria['pk'])])
+                    inline_keyboard.append([InlineKeyboardButton(text=categoria['fields']['name'], callback_data=categoria['pk'])])
 
                 keyboard = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
                 bot.sendMessage(chat_id, 'Categorías:', reply_markup=keyboard)
