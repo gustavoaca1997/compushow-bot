@@ -103,7 +103,7 @@ def is_categoria(text):
 
 ## Funcion que guarda o actualiza en la base de datos el usuario con su contraseña
 def save_user(usuario, password, chat_id):
-    r = requests.post(COMPUSHOW_URL, data={'carnet': usuario, 'password': password})
+    r = requests.post(COMPUSHOW_URL + 'login_bot/', data={'carnet': usuario, 'password': password})
     response = r.json()
     if not response['valid']:
         bot.sendMessage(chat_id, response['error'])
