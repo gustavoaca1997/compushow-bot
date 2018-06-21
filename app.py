@@ -103,6 +103,12 @@ def is_categoria(text):
 
 ## Funcion que guarda o actualiza en la base de datos el usuario con su contraseña
 def save_user(usuario, password, chat_id):
+    r = requests.post(COMPUSHOW_URL, data={'carnet': usuario, 'password': password})
+    response = r.json()
+    if not response['valid']:
+        bot.sendMessage(chat_id, response['error'])
+        return 0
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()
 
@@ -129,7 +135,7 @@ def save_user(usuario, password, chat_id):
         conn.commit()
         cur.close()
         conn.close()
-        return 0
+        return 2
 
 ## Funcion que chequea si se está esperando que el usuario envíe sus datos de usuario
 def is_waiting(chat_id):
@@ -184,10 +190,13 @@ class ChatSesion(telepot.helper.ChatHandler):
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
                     # Guardamos en la base de datos
-                    if save_user(usuario, password, str(chat_id)):
+                    guardado = save_user(usuario, password, str(chat_id))
+                    if guardado == 1:
                         bot.sendMessage(chat_id, 'Se registró exitosamente tu cuenta.')
-                    else:
+                    elif guardado == 2:
                         bot.sendMessage(chat_id, 'Se actualizó correctamente tu cuenta.')
+                    else:
+                        pass
 
                 except ValueError:
                     bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje. Vuelve a intentarlo con el comando /login')
