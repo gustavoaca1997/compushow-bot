@@ -105,6 +105,7 @@ def is_categoria(text):
 def save_user(usuario, password, chat_id):
     r = requests.post(COMPUSHOW_URL + 'login_bot/', data={'carnet': usuario, 'password': password})
     response = r.json()
+    pprint(response)
     if not response['valid']:
         bot.sendMessage(chat_id, response['error'])
         return 0
