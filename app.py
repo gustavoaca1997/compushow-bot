@@ -190,7 +190,6 @@ class ChatSesion(telepot.helper.ChatHandler):
                 try:
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
-                    print(usuario, password)
                     # Guardamos en la base de datos
                     guardado = save_user(usuario, password, str(chat_id))
                     if guardado == 1:
@@ -200,8 +199,8 @@ class ChatSesion(telepot.helper.ChatHandler):
                     else:
                         pass
 
-                except ValueError:
-                    bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje. Vuelve a intentarlo con el comando /login')
+                except ValueError as e:
+                    bot.sendMessage(chat_id, 'Ocurrió un error leyendo el mensaje: <code>{}</code>\nVuelve a intentarlo con el comando /login'.format(e), parse_mode='HTML')
 
                 except psycopg2.DataError as e:
                     bot.sendMessage(chat_id, 'Ocurrió un error modificando la base de datos: <code>{}</code>'.format(e), parse_mode='HTML')
