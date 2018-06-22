@@ -245,7 +245,6 @@ class ChatSesion(telepot.helper.ChatHandler):
 
     def on_callback_query(self, msg):
         query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
-        print('query_data', query_data)
         ## Si se recibió un voto
         if query_data.split()[0] == "/voto":
             # Obtenemos el carnet del usuario
@@ -294,9 +293,7 @@ class ChatSesion(telepot.helper.ChatHandler):
             if nominado['nominee'] and nominado['nominee'][0]['fields']['extra']:
                 nominado_set += "\n{}".format(escape(nominado['nominee'][0]['fields']['extra']))
 
-            print('categoria:')
-            pprint(categoria)
-            nominados_btns.append([InlineKeyboardButton(text=nominado_set, callback_data="/voto {} {}".format(nominado['nominee'][0]['pk'], categoria['fields']['name']))])
+            nominados_btns.append([InlineKeyboardButton(text=nominado_set, callback_data="/voto {} {}".format(nominado['nominee'][0]['pk'], categoria[0]['fields']['name']))])
 
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=nominados_btns)
