@@ -245,7 +245,7 @@ class ChatSesion(telepot.helper.ChatHandler):
 
     def on_callback_query(self, msg):
         query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
-
+        print('query_data', query_data)
         ## Si se recibió un voto
         if query_data.split()[0] == "/voto":
             # Obtenemos el carnet del usuario
