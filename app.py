@@ -108,7 +108,7 @@ def save_user(usuario, password, chat_id):
     response = r.json()
     pprint(response)
     if not response['valid']:
-        if response['error']:
+        if response.get('error', False):
             bot.sendMessage(chat_id, response['error'])
         else:
             bot.sendMessage(chat_id, 'Parece que te equivocaste con los datos. Intenta de nuevo con /login.')
