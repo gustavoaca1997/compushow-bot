@@ -12,6 +12,7 @@ from pprint import pprint
 from queue import Queue
 import psycopg2
 import json
+import re
 from html import escape
 
 TOKEN = os.environ.get('TOKEN')
@@ -194,6 +195,11 @@ class ChatSesion(telepot.helper.ChatHandler):
                 try:
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
+
+                    # Chequear que el carnet cumple el formato correcto
+                    pattern = re.compile('^([0-9]{2}-[0-9]{5})$')
+                    assert(pattern.match(usuario))
+
                     # Guardamos en la base de datos
                     guardado = save_user(usuario, password, str(chat_id))
                     if guardado == 1:
@@ -212,8 +218,11 @@ class ChatSesion(telepot.helper.ChatHandler):
                 except psycopg2.IntegrityError as e:
                     bot.sendMessage(chat_id, 'Ocurrió un error guardando los datos: <code>{}</code>'.format(e), parse_mode='HTML')
 
+                except AssertionError:
+                    bot.sendMessage(chat_id, 'El carnet debe tener formato XX-XXXXX. Intenta de nuevo con /login.')
+
             elif is_login(msg['text'], chat_id):
-                bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña (e.g cédula) separadas por un espacio.')
+                bot.sendMessage(chat_id, 'Por favor envíame tu nombre de usuario (e.g carnet) y tu contraseña separadas por un espacio.')
 
             elif is_help(msg['text']):
                 bot.sendMessage(chat_id, HELP)
