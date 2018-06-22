@@ -254,6 +254,9 @@ class ChatSesion(telepot.helper.ChatHandler):
             if response.get('success', False):
                 bot.sendMessage(from_id, 'Voto registrado')
                 bot.answerCallbackQuery(query_id, 'Voto registrado')
+            elif not response.get('error', False):
+                bot.sendMessage(from_id, 'Ya votaste por esta categoría')
+                bot.answerCallbackQuery(query_id, 'Ocurrió un error registrando el voto')
             else:
                 bot.sendMessage(from_id, 'Ocurrió un error registrando el voto')
                 bot.answerCallbackQuery(query_id, 'Ocurrió un error registrando el voto')
