@@ -294,6 +294,8 @@ class ChatSesion(telepot.helper.ChatHandler):
             if nominado['nominee'] and nominado['nominee'][0]['fields']['extra']:
                 nominado_set += "\n{}".format(escape(nominado['nominee'][0]['fields']['extra']))
 
+            print('categoria:')
+            pprint(categoria)
             nominados_btns.append([InlineKeyboardButton(text=nominado_set, callback_data="/voto {} {}".format(nominado['nominee'][0]['pk'], categoria['fields']['name']))])
 
 
