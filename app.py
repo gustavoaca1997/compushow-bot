@@ -248,8 +248,19 @@ class ChatSesion(telepot.helper.ChatHandler):
 
         ## Si se recibió un voto
         if query_data.split()[0] == "/voto":
-            r = requests.post(COMPUSHOW_URL + 'voting_from_bot/', data={'nominee': query_data.split()[1]})
-            pprint(r.text)
+            # Obtenemos el carnet del usuario
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            cur = conn.cursor()
+
+            # Chequeamos si ya el usuario existe
+            cur.execute('SELECT carnet FROM usuario WHERE chat_id = %s;', (chat_id, ))
+            row = cur.fetchone()
+            if not row or not row[0]:
+                bot.sendMessage(from_id, 'Parece que no has iniciado sesión. Utiliza el comando /lohin.')
+                return
+
+            student_id = row[0]
+            r = requests.post(COMPUSHOW_URL + 'voting_from_bot/', data={'nominee': query_data.split()[1], 'categoria': query_data.split()[2], 'student_id': student_id})
             response = r.json()
             if response.get('success', False):
                 bot.sendMessage(from_id, 'Voto registrado')
@@ -258,7 +269,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                 bot.sendMessage(from_id, 'Ya votaste por esta categoría')
                 bot.answerCallbackQuery(query_id, 'Ocurrió un error registrando el voto')
             else:
-                bot.sendMessage(from_id, 'Ocurrió un error registrando el voto')
+                bot.sendMessage(from_id, 'Ocurrió un error registrando el voto: {}'.format(response.get('error')))
                 bot.answerCallbackQuery(query_id, 'Ocurrió un error registrando el voto')
             return
 
@@ -283,7 +294,7 @@ class ChatSesion(telepot.helper.ChatHandler):
             if nominado['nominee'] and nominado['nominee'][0]['fields']['extra']:
                 nominado_set += "\n{}".format(escape(nominado['nominee'][0]['fields']['extra']))
 
-            nominados_btns.append([InlineKeyboardButton(text=nominado_set, callback_data="/voto {}".format(nominado['nominee'][0]['pk']))])
+            nominados_btns.append([InlineKeyboardButton(text=nominado_set, callback_data="/voto {} {}".format(nominado['nominee'][0]['pk'], categoria['fields']['name']))])
 
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=nominados_btns)
