@@ -190,6 +190,7 @@ class ChatSesion(telepot.helper.ChatHandler):
                 try:
                     # Parseamos usuario y contraseña
                     usuario, password = msg['text'].split()
+                    print(usuario, password)
                     # Guardamos en la base de datos
                     guardado = save_user(usuario, password, str(chat_id))
                     if guardado == 1:
