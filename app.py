@@ -253,7 +253,7 @@ class ChatSesion(telepot.helper.ChatHandler):
             cur = conn.cursor()
 
             # Chequeamos si ya el usuario existe
-            cur.execute('SELECT carnet FROM usuario WHERE chat_id = %s;', (chat_id, ))
+            cur.execute('SELECT carnet FROM usuario WHERE chat_id = %s;', (from_id, ))
             row = cur.fetchone()
             if not row or not row[0]:
                 bot.sendMessage(from_id, 'Parece que no has iniciado sesión. Utiliza el comando /lohin.')
