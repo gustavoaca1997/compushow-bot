@@ -113,6 +113,9 @@ def save_user(usuario, password, chat_id):
             bot.sendMessage(chat_id, response['error'])
         else:
             bot.sendMessage(chat_id, 'Parece que te equivocaste con los datos. Intenta de nuevo con /login.')
+            conn.commit()
+            cur.close()
+            conn.close()
         return 0
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -264,7 +267,10 @@ class ChatSesion(telepot.helper.ChatHandler):
             cur.execute('SELECT carnet FROM usuario WHERE chat_id = %s;', (str(from_id), ))
             row = cur.fetchone()
             if not row or not row[0]:
-                bot.sendMessage(from_id, 'Parece que no has iniciado sesión. Utiliza el comando /lohin.')
+                bot.sendMessage(from_id, 'Parece que no has iniciado sesión. Utiliza el comando /login.')
+                conn.commit()
+                cur.close()
+                conn.close()
                 return
 
             student_id = row[0]
@@ -279,6 +285,10 @@ class ChatSesion(telepot.helper.ChatHandler):
             else:
                 bot.sendMessage(from_id, 'Ocurrió un error registrando el voto: {}'.format(response.get('error')))
                 bot.answerCallbackQuery(query_id, 'Ocurrió un error registrando el voto')
+
+            conn.commit()
+            cur.close()
+            conn.close()
             return
 
         r = requests.get(COMPUSHOW_URL + 'category/', params={'pk': query_data})
