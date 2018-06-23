@@ -113,9 +113,6 @@ def save_user(usuario, password, chat_id):
             bot.sendMessage(chat_id, response['error'])
         else:
             bot.sendMessage(chat_id, 'Parece que te equivocaste con los datos. Intenta de nuevo con /login.')
-            conn.commit()
-            cur.close()
-            conn.close()
         return 0
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
