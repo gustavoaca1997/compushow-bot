@@ -21,7 +21,6 @@ SECRET = '/bot' + TOKEN
 UPDATE_QUEUE = Queue()
 
 # Token para el cuartico
-TOKEN_CUARTICO = "chillbro2018"
 PORT = os.environ.get('PORT')
 SECRET = '/bot' + TOKEN
 UPDATE_QUEUE = Queue()
@@ -104,7 +103,12 @@ def is_categoria(text):
 
 ## Funcion que guarda o actualiza en la base de datos el usuario con su contraseña
 def save_user(usuario, password, chat_id):
-    r = requests.post(COMPUSHOW_URL + 'login_bot/', data={'carnet': usuario, 'password': password})
+    data = {
+        'carnet': usuario,
+        'password': password,
+        'token': TOKEN
+    }
+    r = requests.post(COMPUSHOW_URL + 'login_bot/', data=data)
     print(r.text)
     response = r.json()
     pprint(response)
@@ -271,7 +275,14 @@ class ChatSesion(telepot.helper.ChatHandler):
                 return
 
             student_id = row[0]
-            r = requests.post(COMPUSHOW_URL + 'voting_from_bot/', data={'nominee': query_data.split()[1], 'categoria': query_data.split()[2], 'student_id': student_id})
+            data = { 
+                'nominee': query_data.split()[1], 
+                'categoria': query_data.split()[2], 
+                'student_id': student_id, 
+                'token': TOKEN
+            }
+            r = requests.post(COMPUSHOW_URL + 'voting_from_bot/', data=data)
+
             response = r.json()
             if response.get('success', False):
                 bot.sendMessage(from_id, 'Voto registrado')
