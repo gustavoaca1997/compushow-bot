@@ -17,7 +17,7 @@ psycopg2-binary==2.7.5
 public==1.0.3
 query-string==1.0.2
 request==1.0.2
-requests==2.18.4
+requests==2.20.0
 telepot==12.6
 urllib3==1.22
 Werkzeug==0.14.1
